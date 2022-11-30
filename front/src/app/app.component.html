@@ -1,0 +1,74 @@
+<div class="top">
+<div class="kunde">
+  <p>Name:</p>
+  <input type="text">
+  <p>Adresse:</p>
+  <textarea type="text" rows="3"></textarea>
+</div>
+<div class="logo">
+  <img src="assets/logo5.png" alt="">
+</div>
+</div>
+<br>
+
+<br><br>
+<div class="body">
+  <p class="titel">Rechnung</p>
+  <p>Vielen Dank für Ihren Auftrag und Ihre Vertrauen.</p>
+  <p>Für unsere Arbeit und Material stellen Ihnen folgende Summe in Rechnung</p>
+  <div class="lista">
+    <p>Pos</p>
+    <p>Artikel</p>
+    <p>Anzahl</p>
+    <p>Einzelpreis</p>
+    <p>Summe</p>
+    <br>
+  </div>
+    <div class="element">
+      <div class="lista">
+        <p>1</p>
+        <input type="text">
+        <input type="number" [(ngModel)]="nr1">
+        <input type="number" [(ngModel)]="pret1">
+        <p>{{nr1 * pret1}}</p>
+      </div>
+      <hr>
+      <div class="lista">
+        <p>2</p>
+        <input type="text">
+        <input type="number" [(ngModel)]="nr2">
+        <input type="number" [(ngModel)]="pret2">
+        <p>{{nr2 * pret2}}</p>
+      </div>
+      <hr>
+      <div class="lista">
+        <p>3</p>
+        <input type="text">
+        <input type="number" [(ngModel)]="nr3">
+        <input type="number" [(ngModel)]="pret3">
+        <p>{{nr3 * pret3}}</p>
+      </div>
+      <hr>
+  </div>
+  <br>
+  <div class="suma">
+    <p>Netto:{{nr1*pret1+nr2*pret2+nr3*pret3}}</p>
+    <p>Umsatzsteuer: {{(nr1*pret1+nr2*pret2+nr3*pret3)*19/100}}</p>
+    <p>Summe: {{(nr1*pret1 + nr2*pret2 +nr3*pret3)+(nr1*pret1+nr2*pret2+nr3*pret3)*19/100}} </p>
+  </div>
+</div>
+<hr>
+<br>
+<br><br><br>
+<footer class="footer">
+  <div>
+<p>MyPapService24H</p>
+<p>Email: mypapservice24@gmail.com</p>
+<p>CIF BT : CJ37072</p>
+  </div>
+  <div>
+<p>Banca Transilvania</p>
+<p>Euro : RO67B TRLE URCR T0CJ 3707 201</p>
+<p>RON : RO23 BTRL RONC RT0C J370 721</p>
+  </div>
+</footer>
