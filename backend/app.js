@@ -17,6 +17,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({ credentials: true, origin: "http://localhost:4200" }));
 app.use(express.static("facturi"));
-app.use("/", router);
+app.use("/api", router);
 
 module.exports = app;

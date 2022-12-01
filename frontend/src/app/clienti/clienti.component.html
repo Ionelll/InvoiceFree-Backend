@@ -1,0 +1,25 @@
+<div class="container">
+      <div class="grid">
+            <div class="header">
+                  <p>datele clientului</p>
+                  <img src="assets/logo5.png" alt="logo">
+                  
+                  <p>Vielen Dank für Ihren Auftrag und Ihre Vertrauen.</p>
+                  <p>Data</p>
+                  <p>Für unsere Arbeit und Material stellen Ihnen folgende Summe in Rechnung:</p>
+            </div>
+            <div class="content">
+                  <form #articol="ngForm" >
+                        <div *ngFor="let i of i">
+                        <input type="text" name="articol{{i}}" ngModel>
+                        <input type="number" name="bucati{{i}}" ngModel>
+                        <input type="number" name ="pret{{i}}" ngModel>
+                        <input type="number" name="total{{i}}" value="{{articol.value.bucati1*articol.value.pret1}}" disabled ngModel >
+                        <button (click)=addInput()>add</button>
+                        </div>
+                        <p>Netto: {{netto(articol)}}</p>
+                  </form>
+                  
+            </div>
+      </div>
+</div>
