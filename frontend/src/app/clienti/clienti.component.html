@@ -12,20 +12,28 @@
                   </div>
                   <div class="text">                 
                         <p>Vielen Dank für Ihren Auftrag und Ihre Vertrauen.</p>
-                        <p>Data</p>
+                        <p>{{date}}</p>
                         <p>Für unsere Arbeit und Material stellen Ihnen folgende Summe in Rechnung:</p>
                   </div>
             </div>
             <div class="content">
-                  <form #articol="ngForm" >
-                        <div *ngFor="let i of i">
+                  <div class="tabelhead">
+                        <p>Pos.</p>
+                        <p>Artikel</p>
+                        <p>Anzahl</p>
+                        <p>Preis</p>
+                        <p>Summe</p>
+                  </div>
+                  <form class="form" #articol="ngForm" >
+                        <div class="tabel"  *ngFor="let i of i">
+                              <p>{{i}}</p>
                         <input type="text" name="nume{{i}}" ngModel>
-                        <input type="number" name="bucati{{i}}" ngModel>
+                        <input type="number" class="bucati" name="bucati{{i}}" ngModel>
                         <input type="number" name ="pret{{i}}"  ngModel>
                         <input type="number" name="total{{i}}" [value]='suma(articol,i)' disabled ngModel >
-                        <button (click)=addInput() *ngIf="i==x">add</button>
                         </div>
-                        <div>
+                        <button (click)=addInput() >add</button>
+                        <div class="sume">
                               <p>Netto:</p>
                               <input type="number" name="netto" [value]='netto(articol)' disabled>
                         </div>
