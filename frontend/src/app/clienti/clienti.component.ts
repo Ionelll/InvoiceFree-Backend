@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormGroup, NgForm } from '@angular/forms';
 
 @Component({
@@ -6,17 +6,25 @@ import { FormGroup, NgForm } from '@angular/forms';
   templateUrl: './clienti.component.html',
   styleUrls: ['./clienti.component.scss']
 })
-export class ClientiComponent {
+export class ClientiComponent  {
   i=[1]
-  
+  x=1
+  z=0
 addInput(){
-  let x=this.i.slice(-1)[0]
-  x++
-  this.i.push(x)
+  this.x=this.i.slice(-1)[0]
+  this.x++
+  this.i.push(this.x)
 }
 
+suma(form:NgForm,i:number){
+  return form.value["bucati"+i]*form.value["pret"+i]
+}
 netto(form:NgForm){
-  return form.value.bucati1*form.value.pret1
-}
+  this.z=0
+  for(let item of this.i ){
+    this.z+=(parseInt(form.value["bucati"+item])*parseInt(form.value["pret"+item]))||0
+  }
+  return this.z
 }
 
+}
