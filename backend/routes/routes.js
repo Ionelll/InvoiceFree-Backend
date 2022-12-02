@@ -43,4 +43,42 @@ router.post("/addclient", (req, res) => {
   
 });
 
+router.use("/users", (req, res) => {
+
+  Client.find().then((result) => {
+    res.status(200).json({
+      count: result.length,
+      result: result
+    });
+  }).catch((error) => {
+    res.status(400).json({
+      message: "Eroare interna incercati din nou",
+      error: error,
+    });
+  });;
+});
+
+
+router.use("/user/:nume", (req, res) => {
+
+  Client.find({nume: req.params.nume}).then((result) => {
+    // console.log(result)
+    res.status(200).json({
+      count: result.length,
+      result: result
+    });
+  }).catch((error) => {
+    res.status(400).json({
+      message: "Eroare interna incercati din nou",
+      error: error,
+    });
+  });;
+});
+
+
+
+
+
+
+
 module.exports = router;
