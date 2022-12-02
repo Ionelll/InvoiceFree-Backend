@@ -1,0 +1,53 @@
+.container{
+      padding: 2rem 10rem;
+      height: 90%;
+}
+.grid{
+      min-height: 100%;
+      display: grid;
+      grid-template-columns: 100%;
+      grid-template-rows: auto 1fr auto;
+      
+}
+.header{
+      grid-row: 1;
+      display: grid;
+      row-gap: 2em;
+      grid-template-columns: auto 1fr auto;
+      grid-template-rows: 1fr 1fr;
+      textarea{
+            resize: none;
+            height: 5em;
+            width: 20em;
+      }
+      .text{
+            grid-row: 2;
+            grid-column: span 3;
+      }
+      .imgcontainer{
+            grid-row: 1;
+            grid-column: 3;
+            img{
+                  height: 10rem;
+            }
+      }
+      .client{
+            display: flex;
+            flex-direction: column;
+            margin: auto;
+      }
+}
+
+
+.content{
+      grid-row: 2;
+
+      width: 100%;
+      display: flex;
+      input{
+            text-align: center;
+      }
+}
+.footer{
+      grid-row: 3;
+}
