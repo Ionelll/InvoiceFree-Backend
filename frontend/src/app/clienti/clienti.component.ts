@@ -1,5 +1,6 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { FormGroup, NgForm } from '@angular/forms';
+import { formatDate } from '@angular/common';
+import { Component } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-clienti',
@@ -9,7 +10,8 @@ import { FormGroup, NgForm } from '@angular/forms';
 export class ClientiComponent  {
   i=[1]
   x=1
-  z=0
+  date=new Date()
+  datenow=formatDate(this.date,'dd/MM/yyy','en-US')
 addInput(){
   this.x=this.i.slice(-1)[0]
   this.x++
@@ -20,11 +22,11 @@ suma(form:NgForm,i:number){
   return form.value["bucati"+i]*form.value["pret"+i]
 }
 netto(form:NgForm){
-  this.z=0
+  let z=0
   for(let item of this.i ){
-    this.z+=(parseInt(form.value["bucati"+item])*parseInt(form.value["pret"+item]))||0
+  z+=(parseInt(form.value["bucati"+item])*parseInt(form.value["pret"+item]))||0
   }
-  return this.z
+  return z
 }
 
 }
