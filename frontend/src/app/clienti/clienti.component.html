@@ -2,45 +2,56 @@
       <div class="grid">
             <div class="header">
                   <div class="client">
-                        <p>Client:</p>
                         <input type="text" name="numeclient" placeholder="Name...">
-                        <textarea name="adresa"></textarea>
-                        <input type="text" name="telefon">
                   </div>
                   <div class="imgcontainer">
                         <img src="assets/logo5.png" alt="logo">
                   </div>
                   <div class="text">                 
                         <p>Vielen Dank für Ihren Auftrag und Ihre Vertrauen.</p>
-                        <p>{{date}}</p>
+                        <div class="date">
                         <p>Für unsere Arbeit und Material stellen Ihnen folgende Summe in Rechnung:</p>
+                        <p>{{datenow}}</p>                       
+                        </div>
                   </div>
             </div>
-            <div class="content">
-                  <div class="tabelhead">
-                        <p>Pos.</p>
-                        <p>Artikel</p>
-                        <p>Anzahl</p>
-                        <p>Preis</p>
-                        <p>Summe</p>
-                  </div>
-                  <form class="form" #articol="ngForm" >
-                        <div class="tabel"  *ngFor="let i of i">
-                              <p>{{i}}</p>
-                        <input type="text" name="nume{{i}}" ngModel>
-                        <input type="number" class="bucati" name="bucati{{i}}" ngModel>
-                        <input type="number" name ="pret{{i}}"  ngModel>
-                        <input type="number" name="total{{i}}" [value]='suma(articol,i)' disabled ngModel >
-                        </div>
-                        <button (click)=addInput() >add</button>
-                        <div class="sume">
-                              <p>Netto:</p>
-                              <input type="number" name="netto" [value]='netto(articol)' disabled>
+                  
+                        
+                 
+                  <form class="content" #articol="ngForm"  >
+                        <input class="pos" value="Pos." disabled>
+                        <input class="art" value="Artikel" disabled>
+                        <input class="anz" value="Menge"disabled>
+                        <input class="pret" value="Einzelpreis" disabled>
+                        <input class="summe" value="Summe" disabled>
+                        <ng-container class="tabel" *ngFor="let i of i" >
+                              <input class="pos" name="pos{{i}}" [value]="i" @enterleave  disabled>
+                        <input type="text" class="name"  name="nume{{i}}" @enterleave ngModel>
+                        <input type="number" class="bucati"   name="bucati{{i}}" @enterleave ngModel>
+                        <input type="number" class="pret"  name ="pret{{i}}" @enterleave  ngModel>
+                        <input type="number" class="total"  name="total{{i}}" @enterleave [value]='suma(articol,i)' disabled ngModel >
+                        <a (click)=removeInput(i) class="minus"  *ngIf="i==x && i>1">-</a>
+                        </ng-container>
+                        <ng-container>
+                        <a (click)=addInput() class="plus"  >{{x+1}}</a>
+                        </ng-container>
+                              <div class="netto">
+                                    <div>
+                              <input class="label" value="Netto">
+                              <input type="number" name="netto" class="value" [value]='netto(articol)' disabled>
+                                    </div>
+                              <div>
+                              <input class="label" value="MwSt 19%">
+                              <input type="number" name="netto" class="value" [value]='netto(articol)' disabled>
+                              </div>
+                              <div>
+                              <input class="label" value="Total">
+                              <input type="number" name="netto" class="value" [value]='netto(articol)' disabled>
+                              </div>
                         </div>
                         
                   </form>
                   
-            </div>
             
             <div class="footer">
                   <hr>
