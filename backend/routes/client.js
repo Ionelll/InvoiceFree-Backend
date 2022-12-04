@@ -4,32 +4,59 @@ const router = express.Router();
 const ObjectId = require("mongo-objectid");
 //router.post folosesti, ok(Mariuss)
 
-router.post("/addclient", (req, res) => {
-  const clientnou = new Client({
-    nume: req.body.nume,
-    adresa: req.body.adresa,
-    telefon: req.body.telefon,
-    cui: req.body.cui,
-    email: req.body.email,
-    website: req.body.website,
-  });
+router.post("/addclient", async (req, res) => {
   
-    clientnou
-    .save()
-    .then((result) => {
-      res.status(200).json({
-        message: "succesfully aded",
-        result: result});
-    })
-    .catch((error) => {
-      res.status(400).json({
-        message: "Eroare interna incercati din nou",
-        error: error,
-      });
+  
+  let searchClient = Client.find({nume: req.body.nume}).then((result) => {
+    return result
+  })
+  
+  let existedClient = await searchClient
+  
+  if (existedClient.length < 1){
+    const clientnou = new Client({
+      nume: req.body.nume,
+      adresa: req.body.adresa,
+      telefon: req.body.telefon,
+      cui: req.body.cui,
+      email: req.body.email,
+      website: req.body.website,
     });
-  
-  
+      clientnou
+      .save()
+      .then((result) => {
+        res.status(200).json({
+          message: "succesfully aded",
+          result: result});
+      })
+      .catch((error) => {
+        res.status(400).json({
+          message: "Eroare interna incercati din nou",
+          error: error,
+        });
+      });
+  }
+  else{
+    const updateClient = {
+      nume: req.body.nume,
+      adresa: req.body.adresa,
+      telefon: req.body.telefon,
+      cui: req.body.cui,
+      email: req.body.email,
+      website: req.body.website,
+    }
+    
+    Client.findByIdAndUpdate({_id: existedClient[0]._id }, updateClient, (error, data) => {
+      
+      if (error) {
+        res.status(400).json(error);
+      } else {
+        res.status(200).json({message: "succesfully updated"}); 
+      }
+    })
+  }
 });
+
 
 router.use("/clients", (req, res) => {
 
@@ -144,12 +171,10 @@ router.post("/updateClient", (req,res)=> {
       if (error) {
         res.status(400).json(error);
       } else {
-        res.status(200).json(data); 
+        res.status(200).json({message: "succesfully updated"}); 
       }
     }
     );
-
-   
   })
 
 })
