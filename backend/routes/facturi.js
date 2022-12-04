@@ -3,7 +3,7 @@ const express = require("express");
 const send = express.Router();
 const ObjectId = require("mongo-objectid");
 const path = require("path")
-
+var fs = require('fs');
 
 
 
@@ -13,11 +13,19 @@ send.post("/addInvoice", async(req, res) => {
     let month = date_ob.getMonth() + 1
     let day = date_ob.toISOString().slice(0, 10)
     let newDay = day[8] + day[9]
-   
-    console.log(month, newDay, year)
+
+    let dir = "uploads/facturi/" + year + "/" + month + "/" + newDay;
+    console.log(dir)
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+
+
+    
     let invoiceFile =  req.files.pathInvoice
-    console.log(invoiceFile)
-    const filePath = path.join(__dirname, '../uploads/' + "/" + `${year}` + "/" + `${month}` + "/" + `${newDay}` + "/" + `${day}` + `${invoiceFile.name}` ) ;
+   
+    const filePath = path.join(__dirname, '../uploads/facturi/' + "/" + `${year}` + "/" + `${month}` + "/" + `${newDay}` + "/" + `${day}` + " " +  `${invoiceFile.name}` );
+    console.log(filePath)
     const facturaNoua = new Factura({
       nume: req.body.nume,
       totalInvoice: req.body.totalInvoice,
