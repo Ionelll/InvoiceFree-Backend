@@ -85,4 +85,104 @@ send.use("/invoice/:nume", (req, res) => {
     });;
   });
 
+
+  send.use("/getInvoice", (req, res) => {
+
+    let searchDate = req.body.date
+    let searchName = req.body.nume
+
+    if(searchDate && searchName){
+      Factura.find({nume : searchName, date: searchDate}).then((result)=>{
+        
+        res.status(200).json({
+          count: result.length,
+          result: result
+        });
+      }).catch((error)=>{
+          res.status(400).json({
+            message: "This invoice does not exists",
+            error: error
+          })
+        })
+      
+    }
+    else{
+      if(searchDate && !searchName){
+        Factura.find({date: searchDate}).then((result)=>{
+          
+          res.status(200).json({
+            count: result.length,
+            result: result
+          });
+        }).catch((error)=>{
+            res.status(400).json({
+              message: "This invoice does not exists",
+              error: error
+            })
+          })
+        
+      }
+      else{
+        if(!searchDate && searchName){
+          Factura.find({nume: searchName}).then((result)=>{
+            res.status(200).json({
+              count: result.length,
+              result: result
+            });
+          }).catch((error)=>{
+              res.status(400).json({
+                message: "This invoice does not exists"
+              })
+            })
+          
+        }
+        else{
+          if((searchDate == null || searchDate == "" || typeof(searchDate) === undefined) 
+          && (searchName == null || searchName == "" || typeof(searchName) === undefined)){
+            Factura.find().then((result)=>{
+              res.status(200).json({
+                count: result.length,
+                result: result
+              })
+            }).catch((error) => {
+              res.status(400).json({
+                message: "error",
+                error: error
+              })
+            })
+          }
+        else{
+          res.status(400).json({
+            message: "intern error"
+          })
+        }
+      }
+    }
+}
+  });
+
+
+  send.post("/deleteInvoice", (req, res) => {
+    let Id = new ObjectId("");
+    id = req.body._id
+    console.log(req.body._id)
+    Factura.deleteOne({_id: id}).then((result)=>{
+      if(result.deletedCount < 1){
+        res.status(401).json({
+          message: "cant delete this invoice",
+        });
+      }
+      else{
+        /// dont forget to delete the invoice from the folder
+        res.status(200).json({
+          message: "Item was deleted succesfully",
+        });
+      }
+    })
+  })
+
+
+
+
+
 module.exports = send;
