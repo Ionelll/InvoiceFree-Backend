@@ -15,7 +15,7 @@ send.post("/addInvoice", async(req, res) => {
     let newDay = day[8] + day[9]
 
     let dir = "uploads/facturi/" + year + "/" + month + "/" + newDay;
-    console.log(dir)
+    // console.log(req.file, req.body)
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
@@ -23,19 +23,20 @@ send.post("/addInvoice", async(req, res) => {
 
     
     let invoiceFile =  req.files.pathInvoice
-   
-    const filePath = path.join(__dirname, '../uploads/facturi/' + "/" + `${year}` + "/" + `${month}` + "/" + `${newDay}` + "/" + `${day}` + " " +  `${invoiceFile.name}` );
-    console.log(filePath)
-    const facturaNoua = new Factura({
-      nume: req.body.nume,
-      totalInvoice: req.body.totalInvoice,
-      date: req.body.date,
-      payed: req.body.payed,
-      pathInvoice: filePath
-    });
-   
+    console.log(invoiceFile)
+    try {
+      const filePath = path.join(__dirname, '../uploads/facturi/' + "/" + `${year}` + "/" + `${month}` + "/" + `${newDay}` + "/" + `${day}` + " " +  `${invoiceFile.name}` );
+      console.log(filePath)
+      const facturaNoua = new Factura({
+        nume: req.body.nume,
+        totalInvoice: req.body.totalInvoice,
+        date: req.body.date,
+        payed: req.body.payed,
+        pathInvoice: filePath
 
-    facturaNoua
+      });
+
+      facturaNoua
       .save()
       .then(async (result) => {
         await invoiceFile.mv(filePath)
@@ -50,6 +51,16 @@ send.post("/addInvoice", async(req, res) => {
           error: error,
         }); 
     });
+
+    } catch (error) {
+      console.error(error);
+  
+    }
+
+   
+   
+
+    
 });
 
 

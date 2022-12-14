@@ -16,15 +16,16 @@ export class ApiService{
             this.http.post<Client>('http://localhost:3000/api/addclient',form).subscribe()
       }
       saveFactura(file:FormData){
-            this.http.post('http://localhost:3000/api/savefactura',file).subscribe()
+            console.log(file)
+            this.http.post('http://localhost:3000/api/invoice/addInvoice',file).subscribe()
       }
       clientList(){
-            this.http.get<string[]>('http://localhost:3000/api/clientlist').subscribe(res=>{
+            this.http.get<string[]>('http://localhost:3000/api/clients').subscribe(res=>{
                   this.clients.next(res)
             })
       }
       searchClient(clientname:string){
-            this.http.get<Client>(`http://localhost:3000/api/searchclient/${clientname}`).subscribe(res=>{
+            this.http.get<Client>(`http://localhost:3000/api/client/${clientname}`).subscribe(res=>{
                   this.client.next(res[0])
             })
       }

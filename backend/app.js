@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const router = require("./routes/client.js");
 const send = require("./routes/facturi.js")
+const user = require("./routes/user.js")
 const fileUpload = require("express-fileupload")
 
 app = express();
@@ -23,5 +24,6 @@ app.use(fileUpload())
 
 app.use("/api", router);
 app.use("/api/invoice", send);
+app.use("/api/user", user);
 
 module.exports = app;
