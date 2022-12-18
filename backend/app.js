@@ -5,7 +5,8 @@ const router = require("./routes/client.js");
 const send = require("./routes/facturi.js")
 const user = require("./routes/user.js")
 const fileUpload = require("express-fileupload")
-
+const jwt = require('jsonwebtoken')
+const auth = require('../backend/middleware/auth')
 app = express();
 
 mongoose.connect("mongodb://127.0.0.1:27017/Facturi", function (err) {
@@ -22,8 +23,7 @@ app.use(cors({ credentials: true, origin: "http://localhost:4200" }));
 app.use(express.static("facturi"));
 app.use(fileUpload())
 
-app.use("/api", router);
+app.use("/api", router)
 app.use("/api/invoice", send);
-app.use("/api/user", user);
-
+app.use("/api/user", user)
 module.exports = app;
