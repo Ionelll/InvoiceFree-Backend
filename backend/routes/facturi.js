@@ -56,12 +56,47 @@ send.post("/addInvoice", async(req, res) => {
       console.error(error);
   
     }
-
-   
-   
-
     
 });
+
+
+send.post("/saveInvoice", (req, res) => {
+
+  const client = new Object ({
+    nume: req.body.clientdata.nume,
+    adresa: req.body.clientdata.adresa,
+    telefon: req.body.clientdata.telefon,
+    cui: req.body.clientdata.cui,
+    email: req.body.clientdata.email,
+  })
+
+  // console.log(client)
+  const facturaNoua = new Factura({
+    clientdata: client,
+    totalInvoice: req.body.totalInvoice,
+    dateNow: req.body.datenow,
+    nrFactura: req.body.nrfactura,
+    tabel: req.body.tabel,
+    totalInvoice: req.body.totalInvoice
+  });
+  // console.log(facturaNoua)
+  facturaNoua
+      .save()
+      .then( (result) => {
+        res.status(200).json({
+          message: "succesfully added",
+          result: result
+        });
+      })
+      .catch((error) => {
+        res.status(400).json({
+          message: "Eroare interna incercati din nou",
+          error: error,
+        }); 
+    });
+
+
+})
 
 
 
