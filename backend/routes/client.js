@@ -2,7 +2,8 @@ const Client = require("../models/client");
 const express = require("express");
 const router = express.Router();
 const ObjectId = require("mongo-objectid");
-//router.post folosesti, ok(Mariuss)
+const auth = require('../middleware/auth')
+
 
 router.post("/addclient", async (req, res) => {
   
@@ -58,7 +59,7 @@ router.post("/addclient", async (req, res) => {
 });
 
 
-router.use("/clients", (req, res) => {
+router.use("/clients", auth,(req, res) => {
 
   Client.find().then((result) => {
     res.status(200).json({

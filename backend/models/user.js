@@ -6,22 +6,22 @@ const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique:true },
 
-  adresa: {
-    country: {type: String, require:true},
-    region: {type: String, require:true},
-    city: {type: String, require:true},
-    street: {type: String, require:true},
-    number: {type: String, require:true},
-    postalCode: {type: String, require:true},
+  address: {
+    country: {type: String },
+    region: {type: String },
+    city: {type: String },
+    street: {type: String },
+    number: {type: String},
+    postalCode: {type: String},
   },
 
   //inca nu suntem siguri ce facem cu role
-  // role: {type: String, require:true},
-  phone: { type: String, required: true },
+  // role: {type: String, required:true},
+  phone: { type: String },
   email: { type: String , unique:true, required: true},
-  password: { type: String, required: true },
-  nume :{ type: String, required: true },
-  companies: [{type: String, unique: true}],
+  password: { type: String,  required: true},
+  nume :{ type: String  },
+  companies: [{type: String}],
 });
 
 

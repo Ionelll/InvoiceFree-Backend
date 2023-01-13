@@ -3,26 +3,35 @@ const mongoose = require("mongoose");
 
 const facturiSchema = new mongoose.Schema({
   clientdata: {
-    nume : {type: String, require:true}, 
+    nume : {type: String, required:true}, 
     adresa: {
-      country: {type: String, require:true},
-      region: {type: String, require:true},
-      city: {type: String, require:true},
-      street: {type: String, require:true},
-      number: {type: String, require:true},
-      postalCode: {type: String, require:true},
+      country: {type: String, required:true},
+      region: {type: String, required:true},
+      city: {type: String, required:true},
+      street: {type: String, required:true},
+      number: {type: String, required:true},
+      postalCode: {type: String, required:true},
     }, 
-    telefon: {type: String, require: true, unique: true}, 
-    cui: {type: String,require: true, unique: true}, 
-    email: {type: String,require: true, unique: true} 
+    telefon: {type: String, required: true, unique: true}, 
+    cui: {type: String,required: true, unique: true}, 
+    email: {type: String,required: true, unique: true} 
     
   },
-  totalInvoice: { type: Number, require: true},
-  dateNow: { type: Date, require: true},
-  nrFactura: { type: String, require: true},
+
+  userData: {
+    username: {type: String, required:true},
+    timeDate: { type: Date, required: true}
+  },
+
+  dueDate: { type: Date, required: true},
+  tva : { type: String, required: true},  
+  currency: { type: String, required: true}, 
+  totalInvoice: { type: Number, required: true},
+  dateNow: { type: Date, required: true},
+  nrFactura: { type: String, required: true},
   tabel: [{ 
-      articol:{type: String, require: true}, 
-      bucati:{type: String, require: true},
+      articol:{type: String, required: true}, 
+      bucati:{type: String, required: true},
       pret:{type: String, require: true}
   }]
 });
