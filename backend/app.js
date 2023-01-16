@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const router = require("./routes/client.js");
 const send = require("./routes/facturi.js")
+const company = require("./routes/companies.js")
 const user = require("./routes/user.js")
 const fileUpload = require("express-fileupload")
 const jwt = require('jsonwebtoken')
@@ -26,4 +27,5 @@ app.use(fileUpload())
 app.use("/api", router)
 app.use("/api/invoice", send);
 app.use("/api/user", user)
+app.use("/api/company", company)
 module.exports = app;

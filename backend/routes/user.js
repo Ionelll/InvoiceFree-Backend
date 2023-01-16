@@ -15,6 +15,7 @@ const bcrypt = require("bcrypt");
 user.post("/login" ,(req,res)=>{
     const username = req.body.username
     const password = req.body.password
+    // console.log(username)
     let fetchedUser
     if(!username || !password){
         res.status(400).json({
@@ -25,7 +26,7 @@ user.post("/login" ,(req,res)=>{
 
       User.findOne({username: username}).then(user =>{
         if(!user){
-          return res.status(201).json({ 
+          return res.status(400).json({ 
             message: "Auth Fail"
           });
         }
@@ -36,7 +37,7 @@ user.post("/login" ,(req,res)=>{
       })
       .then(result =>{
         if(!result){
-          return res.status(201).json({
+          return res.status(400).json({
             message: "Auth Fail"
           })
         }
@@ -45,7 +46,12 @@ user.post("/login" ,(req,res)=>{
         try{
           res.status(200).json({
             message: "succesfully login",
-            token: token
+            token: token,
+            user: {
+              username: fetchedUser.username,
+              email: fetchedUser.email,
+              companies: fetchedUser.companies
+            }
          })
         }
          catch(error) {
@@ -57,6 +63,7 @@ user.post("/login" ,(req,res)=>{
       })
     }
 })
+
 
 
 user.use("/test", auth, (req,res)=>{
