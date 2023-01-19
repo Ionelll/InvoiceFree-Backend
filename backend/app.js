@@ -27,5 +27,5 @@ app.use(fileUpload())
 app.use("/api", router)
 app.use("/api/invoice", send);
 app.use("/api/user", user)
-app.use("/api/company", company)
+app.use("/api/company" ,company)
 module.exports = app;

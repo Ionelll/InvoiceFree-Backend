@@ -23,7 +23,7 @@ const companySchema = new mongoose.Schema({
         price: {type: String},
       }
     ],
-    userId: {type: String},
+    userId: {type: String, required: true},
     photeNumber: {type: String},
     mobileNumber: {type: String, required: true, unique: true},
     fax: {type: String},

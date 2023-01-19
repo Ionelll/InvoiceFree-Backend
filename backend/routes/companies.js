@@ -11,7 +11,7 @@ const auth = require('../middleware/auth')
 const bcrypt = require("bcrypt");
 
 
-company.post("/addCompany", (req,res,next)=>{
+company.post("/addCompany",auth,  (req,res,next)=>{
   
     const newCompany = new Company({
         name: req.body.name,
@@ -32,9 +32,10 @@ company.post("/addCompany", (req,res,next)=>{
         codCaen: req.body.codCaen, 
         bank: req.body.bank
         })
-      console.log(newCompany.email)
+
     newCompany.save()
       .then((result) => {
+        
         res.status(200).json({
           message: "succesfully added",
           
@@ -49,7 +50,8 @@ company.post("/addCompany", (req,res,next)=>{
  })
   
 
-company.use("/getUserCompanies", (req, res, next) =>{
+company.use("/getUserCompanies", auth,  (req, res, next) =>{
+  
   let response
   let id = req.body.ids
   Company.find({userId: id}).then((result)=>{
