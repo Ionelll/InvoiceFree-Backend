@@ -12,11 +12,13 @@ const facturiSchema = new mongoose.Schema({
       number: {type: String, required:true},
       postalCode: {type: String, required:true},
     }, 
-    telefon: {type: String, required: true, unique: true}, 
-    cui: {type: String,required: true, unique: true}, 
-    email: {type: String,required: true, unique: true} 
+    telefon: {type: String, required: true}, 
+    cui: {type: String,required: true}, 
+    email: {type: String,required: true} 
     
   },
+
+  companyId: {type: String, required: true},
 
   userData: {
     username: {type: String, required:true},
@@ -28,7 +30,7 @@ const facturiSchema = new mongoose.Schema({
   currency: { type: String, required: true}, 
   totalInvoice: { type: Number, required: true},
   dateNow: { type: Date, required: true},
-  nrFactura: { type: String, required: true},
+  nrFactura: { type: Number, required: true, unique: true},
   tabel: [{ 
       articol:{type: String, required: true}, 
       bucati:{type: String, required: true},
