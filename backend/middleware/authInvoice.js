@@ -1,13 +1,13 @@
 const jwt =  require("jsonwebtoken")
 require("dotenv").config()
 
-const auth = (req, res, next) => {
-    // console.log(req.headers.authorization)
-    // const token = req.headers.authorization.split(' ')[0]
-    const id = req.body.userId
-    if(!req.headers.authorization || !id){
+const authInvoice = (req, res, next) => {
+    
+    const userId = req.body.userId
+    const companyId = req.body.companyId
+    if(!req.headers.authorization || !userId || companyId){
         return res.status(401).json({
-            message: "no token provided"
+            message: "Not authorized to access this route"
         })
     }
     const token = req.headers.authorization.split(' ')[0]
@@ -29,4 +29,4 @@ const auth = (req, res, next) => {
     next()
 }
 
-module.exports = auth
+module.exports = authInvoice

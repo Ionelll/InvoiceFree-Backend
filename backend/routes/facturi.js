@@ -5,6 +5,7 @@ const ObjectId = require("mongo-objectid");
 const path = require("path")
 var fs = require('fs');
 const auth = require('../middleware/auth')
+const authInvoice = require('../middleware/authInvoice')
 
 
 // send.post("/addInvoice",auth ,async(req, res) => {
@@ -57,7 +58,7 @@ const auth = require('../middleware/auth')
 // });
 
 
-send.post("/saveInvoice", auth ,(req, res) => {
+send.post("/saveInvoice", authInvoice ,(req, res) => {
   console.log(req.body)
   const newInvoice = new Factura({
     clientdata: req.body.clientdata,
@@ -206,6 +207,20 @@ send.post("/invoice", auth ,(req, res) => {
     }
     
   });
+
+  send.post("/getInvoiceNumber", auth, (req, res) =>{
+    Factura.find({nrFactura: req.body.nrFactura }).then((result) => {
+      res.status(200).json({
+        count: result.length,
+        result: result
+      });
+    }).catch((error) => {
+      res.status(400).json({
+        message: "Eroare interna incercati din nou",
+        error: error,
+      });
+    });;
+  })
 
 
   send.delete("/deleteInvoice",auth, (req, res) => {
