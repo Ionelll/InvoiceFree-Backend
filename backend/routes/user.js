@@ -15,6 +15,7 @@ const bcrypt = require("bcrypt");
 user.post("/login" ,(req,res)=>{
     const username = req.body.username
     const password = req.body.password
+
     // console.log(username)
     let fetchedUser
     if(!username || !password){
@@ -42,7 +43,13 @@ user.post("/login" ,(req,res)=>{
           })
         }
         id = fetchedUser._id
-        const token = jwt.sign({id,  username}, process.env.JWT_SECRET, {expiresIn: '1h'})
+        companyId = fetchedUser.companies
+        if(companyId){
+          const token = jwt.sign({id, companyId, username}, process.env.JWT_SECRET, {expiresIn: '1h'})
+        }
+        
+        const token = jwt.sign({id, username}, process.env.JWT_SECRET, {expiresIn: '1h'})
+
         try{
           res.status(200).json({
             message: "succesfully login",
@@ -50,7 +57,8 @@ user.post("/login" ,(req,res)=>{
             user: {
               username: fetchedUser.username,
               email: fetchedUser.email,
-              companies: fetchedUser.companies
+              companies: fetchedUser.companies,
+              userId: fetchedUser._id
             }
          })
         }
@@ -66,6 +74,9 @@ user.post("/login" ,(req,res)=>{
 
 
 
+
+
+
 user.use("/test", auth, (req,res)=>{
   
   res.status(200).json({
@@ -75,6 +86,7 @@ user.use("/test", auth, (req,res)=>{
 
 
 user.post("/register", (req,res)=>{
+  console.log("hello")
   bcrypt.hash(req.body.password, 10)
         .then(hash => {
           const newUser = new User({

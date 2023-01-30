@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 
 const clientSchema = new mongoose.Schema({
-  nume : {type: String},
+  nume : {type: String, required: true},
   adresa: {
     country: {type: String, required:true},
     region: {type: String, required:true},
@@ -12,8 +12,7 @@ const clientSchema = new mongoose.Schema({
     postalCode: {type: String, required:true},
   },
   telefon: {type: String, required:true, unique:true},
-  cui: {type: String, required:true, unique:true},
-  email:{type: String, require:true, unique:true},
+  email:{type: String, unique:true}
 });
 
 

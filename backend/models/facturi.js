@@ -15,14 +15,6 @@ const facturiSchema = new mongoose.Schema({
     telefon: {type: String, required: true}, 
     cui: {type: String,required: true}, 
     email: {type: String,required: true} 
-    
-  },
-
-  companyId: {type: String, required: true},
-
-  userData: {
-    username: {type: String, required:true},
-    timeDate: { type: Date, required: true}
   },
 
   dueDate: { type: Date, required: true},
