@@ -1,31 +1,32 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const router = require("./routes/client.js");
-const send = require("./routes/facturi.js")
-const company = require("./routes/companies.js")
-const user = require("./routes/user.js")
-const fileUpload = require("express-fileupload")
-const jwt = require('jsonwebtoken')
-const auth = require('../backend/middleware/auth')
+require("dotenv").config();
+const clientRoutes = require("./routes/client.routes.js");
+const invoiceRoutes = require("./routes/invoice.routes.js");
+const userRoutes = require("./routes/user.routes.js");
+const cookieParser = require("cookie-parser");
+
 app = express();
 
-mongoose.connect("mongodb://127.0.0.1:27017/Facturi", function (err) {
-  if (err) {
-    console.log("Failed to connect" + err);
-  } else {
-    console.log("You are connected to db");
-  }
-});
+mongoose
+	.connect(process.env.ATLAS_CONNECTION)
+	.then(() => {
+		console.log("connected");
+	})
+	.catch((err) => {
+		console.log(err);
+		console.log(process.env.USERNAME);
+	});
 
-app.use(express.json());
+app.use(cookieParser());
+app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({ credentials: true, origin: "http://localhost:4200" }));
-app.use(express.static("facturi"));
-app.use(fileUpload())
+app.use("/uploads", express.static("uploads"));
 
-app.use("/api", router)
-app.use("/api/invoice", send);
-app.use("/api/user", user)
-app.use("/api/company" ,company)
+app.use("/api", clientRoutes);
+app.use("/api", invoiceRoutes);
+app.use("/api", userRoutes);
+
 module.exports = app;

@@ -1,32 +1,33 @@
-const jwt =  require("jsonwebtoken")
-require("dotenv").config()
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const auth = (req, res, next) => {
-    // console.log(req.headers.authorization)
-    // const token = req.headers.authorization.split(' ')[0]
-    const id = req.body.userId
-    if(!req.headers.authorization || !id){
-        return res.status(401).json({
-            message: "no token provided"
-        })
-    }
-    const token = req.headers.authorization.split(' ')[0]
-    decodeJWT =  JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
-   
-    if (decodeJWT.id != id){
-        return res.status(401).json({
-            message: "Not authorized to access this route"
-        })
-    }
-    try{
-        const decode = jwt.verify(token, process.env.JWT_SECRET)
-    }
-    catch{
-        return res.status(401).json({
-            message: "Not authorized to access this route"
-        })
-    }
-    next()
-}
+	if (!req.cookies.authorization) {
+		return res.status(200).json({
+			message: "Not logged in",
+		});
+	}
+	decodeJWT = JSON.parse(
+		Buffer.from(
+			req.cookies.authorization.split(".")[1],
+			"base64"
+		).toString()
+	);
 
-module.exports = auth
+	if (!decodeJWT) {
+		return res.status(401).json({
+			message: "Unauthorized user",
+		});
+	}
+	try {
+		jwt.verify(req.cookies.authorization, process.env.JWT_SECRET);
+		req.UserId = decodeJWT.id;
+	} catch {
+		return res.status(401).json({
+			message: "Unauthorized user",
+		});
+	}
+	next();
+};
+
+module.exports = auth;
