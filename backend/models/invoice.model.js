@@ -17,44 +17,48 @@ const invoiceSchema = new mongoose.Schema({
 		DocumentType: { type: String },
 	},
 	AccountingSupplierParty: {
-		PartyName: { type: String, required: true },
-		PartyIdentification: { type: String, required: true },
-		EndpointID: { type: String },
-		IndustryClassificationCode: { type: String },
-		PostalAdress: {
-			Psotbox: { type: String },
-			StreetName: { type: String },
-			CityName: { type: String },
-			BuildingNumber: { type: String },
-			PostalZone: { type: String },
-			CountrySubentity: { type: String },
-			Country: { IdentificationCode: { type: String } },
-		},
-		Contact: {
-			Name: { type: String },
-			Telephone: { type: String },
-			ElectronicMail: String,
+		Party: {
+			PartyName: { type: String, required: true },
+			PartyIdentification: { type: String, required: true },
+			EndpointID: { type: String },
+			IndustryClassificationCode: { type: String },
+			PostalAdress: {
+				Psotbox: { type: String },
+				StreetName: { type: String },
+				CityName: { type: String },
+				BuildingNumber: { type: String },
+				PostalZone: { type: String },
+				CountrySubentity: { type: String },
+				Country: { IdentificationCode: { type: String } },
+			},
+			Contact: {
+				Name: { type: String },
+				Telephone: { type: String },
+				ElectronicMail: String,
+			},
 		},
 	},
 	AccountingCustomerParty: {
-		PartyName: { type: String, required: true },
-		PartyIdentification: { type: String, required: true },
-		EndpointID: { type: String },
-		IndustryClassificationCode: { type: String },
-		BuyerReference: { type: String },
-		PostalAdress: {
-			Psotbox: { type: String },
-			StreetName: { type: String },
-			CityName: { type: String },
-			BuildingNumber: { type: String },
-			PostalZone: { type: String },
-			CountrySubentity: { type: String },
-			Country: { IdentificationCode: { type: String } },
-		},
-		Contact: {
-			Name: { type: String },
-			Telephone: { type: String },
-			ElectronicMail: { type: String },
+		Party: {
+			PartyName: { type: String, required: true },
+			PartyIdentification: { type: String, required: true },
+			EndpointID: { type: String },
+			IndustryClassificationCode: { type: String },
+			BuyerReference: { type: String },
+			PostalAdress: {
+				Psotbox: { type: String },
+				StreetName: { type: String },
+				CityName: { type: String },
+				BuildingNumber: { type: String },
+				PostalZone: { type: String },
+				CountrySubentity: { type: String },
+				Country: { IdentificationCode: { type: String } },
+			},
+			Contact: {
+				Name: { type: String },
+				Telephone: { type: String },
+				ElectronicMail: { type: String },
+			},
 		},
 	},
 	Delivery: {
@@ -108,21 +112,23 @@ const invoiceSchema = new mongoose.Schema({
 	},
 	Lines: [
 		{
-			ID: { type: Number },
-			InvoicedQuantity: { type: Number },
-			LineExtensionAmount: { type: Number },
-			Item: {
-				Name: { typr: String },
-				ClassifiedTaxCategory: {
-					ID: { type: String },
-					Percent: { type: Number },
-					TaxScheme: { type: String },
+			InvoiceLine: {
+				ID: { type: Number },
+				InvoicedQuantity: { type: Number },
+				LineExtensionAmount: { type: Number },
+				Item: {
+					Name: { typr: String },
+					ClassifiedTaxCategory: {
+						ID: { type: String },
+						Percent: { type: Number },
+						TaxScheme: { type: String },
+					},
 				},
-			},
-			Price: {
-				PriceAmount: { type: Number },
-				BaseQuantity: { type: Number },
-				unitCode: { type: String },
+				Price: {
+					PriceAmount: { type: Number },
+					BaseQuantity: { type: Number },
+					unitCode: { type: String },
+				},
 			},
 		},
 	],
