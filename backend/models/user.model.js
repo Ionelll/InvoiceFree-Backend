@@ -47,8 +47,8 @@ const userSchema = new mongoose.Schema({
 			Telephone: { type: String },
 			ElectronicMail: { type: String },
 		},
-		Logo: { type: String },
 	},
+	Logo: { type: String },
 });
 userSchema.plugin(uniqueValidator, {
 	message: "Error, expected {PATH} to be unique.",
