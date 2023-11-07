@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
-const clientRoutes = require("./routes/client.routes.js");
+const clientRoutes = require("./routes/customer.routes.js");
 const invoiceRoutes = require("./routes/invoice.routes.js");
 const userRoutes = require("./routes/user.routes.js");
 const cookieParser = require("cookie-parser");
@@ -10,13 +10,12 @@ const cookieParser = require("cookie-parser");
 app = express();
 
 mongoose
-	.connect(process.env.ATLAS_CONNECTION)
+	.connect(process.env.LOCAL_CONNECTION)
 	.then(() => {
 		console.log("connected");
 	})
 	.catch((err) => {
 		console.log(err);
-		console.log(process.env.USERNAME);
 	});
 
 app.use(cookieParser());

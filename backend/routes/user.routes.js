@@ -41,7 +41,7 @@ user.post("/login", (req, res) => {
 					{ id: user._id },
 					process.env.JWT_SECRET,
 					{
-						expiresIn: "5h",
+						expiresIn: "24h",
 					}
 				);
 				const { password, ...userWithoutPassword } = user.toObject();
@@ -57,7 +57,7 @@ user.post("/login", (req, res) => {
 					});
 				} catch (error) {
 					res.status(400).json({
-						message: "wrong username or password, please try again",
+						message: error.message,
 						error: error,
 					});
 				}
@@ -82,23 +82,23 @@ user.get("/isloggedin", auth, (req, res) => {
 		})
 		.catch((error) => {
 			res.status(400).json({
-				message: "Eroare interna",
+				message: error.message,
 				error: error,
 			});
 		});
 });
-user.post("/updatecompany", auth, upload.single("logo"), (req, res) => {
-	const company = JSON.parse(req.body.company);
+user.post("/updatecompany", auth, upload.single("Logo"), (req, res) => {
+	const company = req.body.Party;
 	if (req.file) {
-		company.logo =
+		company.Logo =
 			"http://" + req.headers.host + "/uploads/" + req.file.filename;
 	}
 	User.findByIdAndUpdate(req.UserId, {
-		$set: { company: company },
+		$set: { Party: company },
 	})
 		.then((response) => {
 			res.status(201).json({
-				company: response.company,
+				company: response.Party,
 				message: "Updated succesfully",
 			});
 		})
@@ -109,16 +109,12 @@ user.post("/updatecompany", auth, upload.single("logo"), (req, res) => {
 		});
 });
 
-user.post("/register", (req, res, next) => {
+user.post("/register", (req, res) => {
 	User.init()
 		.then(async () => {
 			const user = new User({
 				email: req.body.email,
 				password: bcrypt.hashSync(req.body.password, 10),
-				company: {
-					companyName: req.body.companyName,
-					registrationNumber: req.body.registrationNumber,
-				},
 			});
 			const result = await user.save();
 			res.status(200).json({
@@ -128,13 +124,12 @@ user.post("/register", (req, res, next) => {
 		})
 		.catch((error) => {
 			res.status(400).json({
-				message: "Eroare interna incercati din nou",
+				message: error.message,
 				error: error,
 			});
 		});
 });
 
-/*logout route*/
 user.get("/logout", (req, res) => {
 	res.clearCookie("authorization");
 	res.status(200).json({

@@ -5,34 +5,20 @@ const invoice = express.Router();
 const auth = require("../middleware/auth");
 
 invoice.post("/saveinvoice", auth, (req, res) => {
-	const newInvoice = new Factura({
-		client: req.body.clientdata,
-		provider: req.UserId,
-		issueDate: req.body.issueDate,
-		dueDate: req.body.dueDate,
-		vat: req.body.tva,
-		currency: req.body.currency,
-		total: req.body.totalInvoice,
-		invoiceNumber: req.body.invoiceNumber,
-		tabel: req.body.tabel,
-	});
-	const invoiceNrList = req.body.invoiceNumber.match(
-		/([A-Za-z])(\d+)([A-Za-z]+)/
-	);
-	const nextInvoiceNr =
-		invoiceNrList[1] + (parseInt(invoiceNrList[2]) + 1) + invoiceNrList[3];
-	User.findByIdAndUpdate(req.UserId, { nextInvoiceNr: nextInvoiceNr });
+	const newInvoice = new Factura(req.body.invoice);
+	const lastInvoiceNr = req.body.invoice.ID;
+	User.findByIdAndUpdate(req.UserId, { lastInvoiceNr: lastInvoiceNr });
 	newInvoice
 		.save()
 		.then((result) => {
 			res.status(200).json({
-				message: "succesfully added",
+				message: "Invoice Saved Succesfully",
 				result: result,
 			});
 		})
 		.catch((error) => {
 			res.status(400).json({
-				message: "Eroare interna incercati din nou",
+				message: error.message,
 				error: error,
 			});
 		});
@@ -48,7 +34,7 @@ invoice.post("updateinvoice", auth, (req, res) => {
 		})
 		.catch((error) => {
 			res.status(400).json({
-				message: "Eroare incercati din nou",
+				message: error.message,
 				error: error,
 			});
 		});
@@ -62,7 +48,7 @@ invoice.post("deleteinvoice", auth, (req, res) => {
 			});
 		} else {
 			res.status(200).json({
-				message: "Item was deleted succesfully",
+				message: "Invoice was succesfully deleted",
 			});
 		}
 	});
