@@ -8,33 +8,38 @@ const userSchema = new mongoose.Schema({
 	Items: [
 		{
 			Item: {
-				Name: { typr: String },
+				Name: { type: String },
 				ClassifiedTaxCategory: {
 					ID: { type: String },
 					Percent: { type: Number },
-					TaxScheme: { type: String },
+					TaxScheme: { ID: { type: String } },
 				},
 			},
 			Price: {
 				PriceAmount: { type: Number },
 				BaseQuantity: { type: Number },
-				unitCode: { type: String },
+				UnitCode: { type: String },
 			},
 		},
 	],
-	preferedCurrency: { type: String },
+
 	preferedLanguage: { type: String },
-	preferedInvoiceText: { type: String },
-	Note: { type: String },
-	preferedDuePeriod: { type: String },
+	invoiceSettings: {
+		duePeriod: { type: Number },
+		DocumentCurrencyCode: { type: String },
+		introduction: { type: String },
+		Note: { type: String },
+		PaymentTerms: { Note: { type: String } },
+	},
+
 	lastInvoiceNr: { type: String },
 	Party: {
-		PartyName: { type: String, unique: true },
-		PartyIdentification: { type: String, unique: true },
+		PartyName: { Name: { type: String, unique: true } },
+		PartyIdentification: { ID: { type: String, unique: true } },
 		EndpointID: { type: String },
 		IndustryClassificationCode: { type: String },
 		PostalAdress: {
-			Psotbox: { type: String },
+			Postbox: { type: String },
 			StreetName: { type: String },
 			CityName: { type: String },
 			BuildingNumber: { type: String },
@@ -46,6 +51,14 @@ const userSchema = new mongoose.Schema({
 			Name: { type: String },
 			Telephone: { type: String },
 			ElectronicMail: { type: String },
+		},
+	},
+	PayeeFinancialAccount: {
+		ID: { type: String },
+		CurrencyCode: { type: String },
+		FinancialInstitution: {
+			Name: { type: String },
+			ID: { trype: String },
 		},
 	},
 	Logo: { type: String },

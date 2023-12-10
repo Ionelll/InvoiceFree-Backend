@@ -4,7 +4,6 @@ const router = express.Router();
 const ObjectId = require("mongo-objectid");
 
 router.post("/updatecustomer", (req, res) => {
-	console.log(req);
 	Customer.findOneAndUpdate({ _id: req.body.id }, req.body.customer)
 		.then((result) => {
 			res.status(200).json({
@@ -54,13 +53,34 @@ router.get("/getcustomerbyid/:id", (req, res) => {
 
 router.get("/searchcustomer/:name", (req, res) => {
 	Customer.find(
-		{ "PartyName.Name": { $regex: req.params.name, $options: "i" } },
-		"PartyName -_id"
+		{
+			$or: [
+				{
+					"Party.PartyName.Name": {
+						$regex: req.params.name,
+						$options: "i",
+					},
+				},
+				{
+					"Party.PartyIdentification.ID": {
+						$regex: req.params.name,
+						$options: "i",
+					},
+				},
+				{
+					"Party.BuyerReference": {
+						$regex: req.params.name,
+						$options: "i",
+					},
+				},
+			],
+		},
+		"Party -_id"
 	)
 		.then((result) => {
 			let list = [];
 			result.forEach((item) => {
-				list.push(item.PartyName.Name);
+				list.push(item.Party.PartyName.Name);
 			});
 			res.status(200).json({
 				list: list,
@@ -75,7 +95,7 @@ router.get("/searchcustomer/:name", (req, res) => {
 });
 
 router.get("/returncustomer/:name", (req, res) => {
-	Customer.findOne({ "PartyName.Name": req.params.name })
+	Customer.findOne({ "Party.PartyName.Name": req.params.name })
 		.then((result) => {
 			res.status(200).json({
 				result: result,

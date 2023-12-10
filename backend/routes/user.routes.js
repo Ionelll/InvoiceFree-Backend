@@ -19,55 +19,46 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage });
 
-user.post("/login", (req, res) => {
+user.post("/login", async (req, res) => {
 	const email = req.body.email;
 	const password = req.body.password;
-	if (!email || !password) {
-		res.status(400).json({
-			error: "Please provide username and password",
-		});
-	} else {
-		User.findOne({ email: email }).then((user) => {
-			if (!user) {
-				res.status(400).json({
-					message: "Wrong email or password",
-				});
-			} else if (!bcrypt.compare(password, user.password)) {
-				res.status(400).json({
-					message: "Wrong email or password",
-				});
-			} else {
+	try {
+		const user = await User.findOne({ email: email }, { __v: 0 });
+		if (user) {
+			const isPasswordValid = await bcrypt.compare(
+				password,
+				user.password
+			);
+			if (isPasswordValid) {
+				const { password, ...userWithoutPassword } = user.toObject();
 				const token = jwt.sign(
-					{ id: user._id },
+					{ id: user._id.toString() },
 					process.env.JWT_SECRET,
 					{
 						expiresIn: "24h",
 					}
 				);
-				const { password, ...userWithoutPassword } = user.toObject();
-				try {
-					res.cookie("authorization", token, {
-						httpOnly: true,
-						sameSite: true,
-						secure: true,
-					});
-					res.status(200).json({
-						loggedin: true,
-						user: userWithoutPassword,
-					});
-				} catch (error) {
-					res.status(400).json({
-						message: error.message,
-						error: error,
-					});
-				}
+				res.cookie("authorization", token, {
+					httpOnly: true,
+					secure: true,
+				});
+				res.status(200).json({
+					loggedin: true,
+					user: userWithoutPassword,
+				});
+			} else {
+				res.status(401).json({ message: "Invalid credentials" });
 			}
-		});
+		} else {
+			res.status(401).json({ message: "Invalid credentials" });
+		}
+	} catch (error) {
+		res.status(500).json({ message: "Internal server error" });
 	}
 });
 
 user.get("/isloggedin", auth, (req, res) => {
-	User.findById(req.UserId, { password: 0, _id: 0 })
+	User.findById(req.UserId, { password: 0, _id: 0, __v: 0 })
 		.then((response) => {
 			if (!response) {
 				res.status(200).json({
@@ -88,18 +79,57 @@ user.get("/isloggedin", auth, (req, res) => {
 		});
 });
 user.post("/updatecompany", auth, upload.single("Logo"), (req, res) => {
-	const company = req.body.Party;
+	console.log(req.body);
 	if (req.file) {
-		company.Logo =
+		req.body.Logo =
 			"http://" + req.headers.host + "/uploads/" + req.file.filename;
 	}
-	User.findByIdAndUpdate(req.UserId, {
-		$set: { Party: company },
-	})
+	User.findByIdAndUpdate(
+		req.UserId,
+		req.body,
+		{ _id: 0, __v: 0, password: 0 },
+		{ new: true }
+	)
 		.then((response) => {
 			res.status(201).json({
-				company: response.Party,
+				user: response,
 				message: "Updated succesfully",
+			});
+		})
+		.catch((error) => {
+			res.status(422).json({
+				message: error.message,
+			});
+		});
+});
+
+user.post("/updateItems", auth, (req, res) => {
+	User.findByIdAndUpdate(
+		req.UserId,
+		{ $set: { Items: req.body } },
+		{ _id: 0, __v: 0, password: 0 },
+		{ new: true }
+	)
+		.then((result) => {
+			res.status(201).json({
+				result,
+			});
+		})
+		.catch((error) => {
+			res.status(422).json({
+				message: error.message,
+			});
+		});
+});
+user.post("/update-settings", auth, (req, res) => {
+	User.findByIdAndUpdate(
+		req.UserId,
+		{ $set: { invoiceSettings: req.body } },
+		{ _id: 0, __v: 0, password: 0, new: true }
+	)
+		.then((result) => {
+			res.status(201).json({
+				result,
 			});
 		})
 		.catch((error) => {

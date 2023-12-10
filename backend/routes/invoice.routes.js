@@ -4,9 +4,10 @@ const express = require("express");
 const invoice = express.Router();
 const auth = require("../middleware/auth");
 
-invoice.post("/saveinvoice", auth, (req, res) => {
-	const newInvoice = new Factura(req.body.invoice);
-	const lastInvoiceNr = req.body.invoice.ID;
+invoice.post("/save-invoice", auth, (req, res) => {
+	const newInvoice = new Invoice(req.body);
+	console.log(req.body.Lines);
+	const lastInvoiceNr = req.body.ID;
 	User.findByIdAndUpdate(req.UserId, { lastInvoiceNr: lastInvoiceNr });
 	newInvoice
 		.save()

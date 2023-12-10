@@ -8,7 +8,7 @@ const invoiceSchema = new mongoose.Schema({
 		StartDate: { type: String },
 		EndDate: { type: String },
 	},
-	Note: { languageID: { type: String }, Note: { type: String } },
+	Note: { type: String },
 	DocumentCurrencyCode: { type: String, required: true },
 	BuyerReference: { type: String },
 	OrderReference: { ID: { type: String } },
@@ -18,12 +18,12 @@ const invoiceSchema = new mongoose.Schema({
 	},
 	AccountingSupplierParty: {
 		Party: {
-			PartyName: { type: String, required: true },
-			PartyIdentification: { type: String, required: true },
+			PartyName: { Name: { type: String, required: true } },
+			PartyIdentification: { ID: { type: String, required: true } },
 			EndpointID: { type: String },
 			IndustryClassificationCode: { type: String },
 			PostalAdress: {
-				Psotbox: { type: String },
+				Postbox: { type: String },
 				StreetName: { type: String },
 				CityName: { type: String },
 				BuildingNumber: { type: String },
@@ -40,13 +40,13 @@ const invoiceSchema = new mongoose.Schema({
 	},
 	AccountingCustomerParty: {
 		Party: {
-			PartyName: { type: String, required: true },
-			PartyIdentification: { type: String, required: true },
+			PartyName: { Name: { type: String, required: true } },
+			PartyIdentification: { ID: { type: String, required: true } },
 			EndpointID: { type: String },
 			IndustryClassificationCode: { type: String },
 			BuyerReference: { type: String },
 			PostalAdress: {
-				Psotbox: { type: String },
+				Postbox: { type: String },
 				StreetName: { type: String },
 				CityName: { type: String },
 				BuildingNumber: { type: String },
@@ -80,7 +80,7 @@ const invoiceSchema = new mongoose.Schema({
 		PaymentID: { type: String },
 		PayeeFinancialAccount: {
 			ID: { type: String },
-			CurrencyCode: { Type: String },
+			CurrencyCode: { type: String },
 			FinancialInstitution: {
 				Name: { type: String },
 				ID: { type: String },
@@ -92,10 +92,10 @@ const invoiceSchema = new mongoose.Schema({
 		ApplyedTaxes: [
 			{
 				TaxSubtotal: {
-					TaxableAmount: { type: Number },
+					TaxableAmount: { type: String },
 					TaxCategory: {
 						ID: { type: String },
-						Percent: { type: Number },
+						Percent: { type: String },
 						TaxScheme: {
 							ID: { type: String },
 						},
@@ -105,29 +105,28 @@ const invoiceSchema = new mongoose.Schema({
 		],
 	},
 	LegalMonetaryTotal: {
-		TaxExclusiveAmount: { type: Number },
-		TaxInclusiveAmount: { type: Number },
-		LineExtensionAmount: { type: Number },
-		PayableAmount: { type: Number },
+		TaxExclusiveAmount: { type: String },
+		TaxInclusiveAmount: { type: String },
+		LineExtensionAmount: { type: String },
+		PayableAmount: { type: String },
 	},
 	Lines: [
 		{
 			InvoiceLine: {
-				ID: { type: Number },
-				InvoicedQuantity: { type: Number },
-				LineExtensionAmount: { type: Number },
+				InvoicedQuantity: { type: String },
+				LineExtensionAmount: { type: String },
 				Item: {
-					Name: { typr: String },
+					Name: { type: String },
 					ClassifiedTaxCategory: {
 						ID: { type: String },
-						Percent: { type: Number },
+						Percent: { type: String },
 						TaxScheme: { type: String },
 					},
 				},
 				Price: {
-					PriceAmount: { type: Number },
-					BaseQuantity: { type: Number },
-					unitCode: { type: String },
+					PriceAmount: { type: String },
+					BaseQuantity: { type: String },
+					UnitCode: { type: String },
 				},
 			},
 		},
