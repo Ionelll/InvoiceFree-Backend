@@ -49,4 +49,6 @@ app.set("port", port);
 const server = http.createServer(app);
 server.on("error", onError);
 server.on("listening", onListening);
+server.keepAliveTimeout = 120 * 1000;
+server.headersTimeout = 120 * 1000;
 server.listen(port);

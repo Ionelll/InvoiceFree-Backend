@@ -29,6 +29,6 @@ app.use("/uploads", express.static("uploads"));
 app.use("/api", clientRoutes);
 app.use("/api", invoiceRoutes);
 app.use("/api", userRoutes);
-app.listen(process.env.PORT);
+
 
 module.exports = app;
