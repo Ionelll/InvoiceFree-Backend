@@ -10,7 +10,7 @@ const cookieParser = require("cookie-parser");
 app = express();
 
 mongoose
-	.connect(process.env.LOCAL_CONNECTION)
+	.connect(process.env.ATLAS_CONNECTION)
 	.then(() => {
 		console.log("connected");
 	})
@@ -21,7 +21,9 @@ mongoose
 app.use(cookieParser());
 app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ credentials: true, origin: "http://localhost:4200" }));
+app.use(
+	cors({ credentials: true, origin: "https://invoicefree.onrender.com" })
+);
 app.use("/uploads", express.static("uploads"));
 
 app.use("/api", clientRoutes);
