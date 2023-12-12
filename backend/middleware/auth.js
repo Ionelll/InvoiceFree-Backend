@@ -2,16 +2,14 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 const auth = (req, res, next) => {
-	if (!req.cookies.authorization) {
+	const token = req.headers["authorization"];
+	if (!token) {
 		return res.status(200).json({
 			message: "Not logged in",
 		});
 	}
 	decodeJWT = JSON.parse(
-		Buffer.from(
-			req.cookies.authorization.split(".")[1],
-			"base64"
-		).toString()
+		Buffer.from(token.split(".")[1], "base64").toString()
 	);
 
 	if (!decodeJWT) {
@@ -20,7 +18,7 @@ const auth = (req, res, next) => {
 		});
 	}
 	try {
-		jwt.verify(req.cookies.authorization, process.env.JWT_SECRET);
+		jwt.verify(token, process.env.JWT_SECRET);
 		req.UserId = decodeJWT.id;
 	} catch {
 		return res.status(401).json({

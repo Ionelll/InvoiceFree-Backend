@@ -38,13 +38,14 @@ user.post("/login", async (req, res) => {
 						expiresIn: "24h",
 					}
 				);
-				res.cookie("authorization", token, {
-					httpOnly: true,
-					secure: true,
-				});
+				// res.cookie("authorization", token, {
+				// 	httpOnly: true,
+				// 	secure: true,
+				// });
 				res.status(200).json({
 					loggedin: true,
 					user: userWithoutPassword,
+					token: token,
 				});
 			} else {
 				res.status(401).json({ message: "Invalid credentials" });
@@ -79,7 +80,6 @@ user.get("/isloggedin", auth, (req, res) => {
 		});
 });
 user.post("/updatecompany", auth, upload.single("Logo"), (req, res) => {
-	console.log(req.body);
 	if (req.file) {
 		req.body.Logo =
 			"http://" + req.headers.host + "/uploads/" + req.file.filename;
@@ -107,8 +107,7 @@ user.post("/updateItems", auth, (req, res) => {
 	User.findByIdAndUpdate(
 		req.UserId,
 		{ $set: { Items: req.body } },
-		{ _id: 0, __v: 0, password: 0 },
-		{ new: true }
+		{ _id: 0, __v: 0, password: 0, new: true }
 	)
 		.then((result) => {
 			res.status(201).json({
