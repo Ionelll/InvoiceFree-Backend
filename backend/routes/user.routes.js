@@ -82,7 +82,7 @@ user.get("/isloggedin", auth, (req, res) => {
 user.post("/updatecompany", auth, upload.single("Logo"), (req, res) => {
 	if (req.file) {
 		req.body.Logo =
-			"http://" + req.headers.host + "/uploads/" + req.file.filename;
+			"https://" + req.headers.host + "/uploads/" + req.file.filename;
 	}
 	User.findByIdAndUpdate(
 		req.UserId,

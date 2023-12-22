@@ -120,7 +120,7 @@ const invoiceSchema = new mongoose.Schema({
 					ClassifiedTaxCategory: {
 						ID: { type: String },
 						Percent: { type: String },
-						TaxScheme: { type: String },
+						TaxScheme: { ID: { type: String } },
 					},
 				},
 				Price: {

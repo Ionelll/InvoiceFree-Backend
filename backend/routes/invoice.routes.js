@@ -7,6 +7,7 @@ const auth = require("../middleware/auth");
 invoice.post("/save-invoice", auth, (req, res) => {
 	const newInvoice = new Invoice(req.body);
 	console.log(req.body.Lines);
+	console.log(newInvoice.Lines);
 	const lastInvoiceNr = req.body.ID;
 	User.findByIdAndUpdate(req.UserId, { lastInvoiceNr: lastInvoiceNr });
 	newInvoice
