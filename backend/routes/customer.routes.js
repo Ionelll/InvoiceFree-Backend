@@ -4,7 +4,9 @@ const router = express.Router();
 const ObjectId = require("mongo-objectid");
 
 router.post("/updatecustomer", (req, res) => {
-	Customer.findOneAndUpdate({ _id: req.body.id }, req.body.customer)
+	Customer.findOneAndUpdate({ _id: req.body.id }, req.body.client, {
+		new: true,
+	})
 		.then((result) => {
 			res.status(200).json({
 				message: "succesfully updated",
@@ -37,7 +39,7 @@ router.post("/addcustomer", (req, res) => {
 });
 router.get("/getcustomerbyid/:id", (req, res) => {
 	const id = new ObjectId(req.params.id);
-	Client.findOne({ _id: id })
+	Customer.findOne({ _id: id })
 		.then((result) => {
 			res.status(200).json({
 				result: result,
@@ -82,9 +84,7 @@ router.get("/searchcustomer/:name", (req, res) => {
 			result.forEach((item) => {
 				list.push(item.Party.PartyName.Name);
 			});
-			res.status(200).json({
-				list: list,
-			});
+			res.status(200).json(list);
 		})
 		.catch((error) => {
 			res.status(400).json({
@@ -97,9 +97,7 @@ router.get("/searchcustomer/:name", (req, res) => {
 router.get("/returncustomer/:name", (req, res) => {
 	Customer.findOne({ "Party.PartyName.Name": req.params.name })
 		.then((result) => {
-			res.status(200).json({
-				result: result,
-			});
+			res.status(200).json(result);
 		})
 		.catch((error) => {
 			res.status(400).json({

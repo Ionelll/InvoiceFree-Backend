@@ -4,11 +4,14 @@ const uniqueValidator = require("mongoose-unique-validator");
 const Customer = new mongoose.Schema({
 	Party: {
 		PartyName: { Name: { type: String, required: true, unique: true } },
-		PartyIdentification: {
-			ID: { type: String, required: true, unique: true },
+		PartyTaxScheme: {
+			CompanyID: { type: String, required: true, unique: true },
+			TaxScheme: { ID: { type: String } },
 		},
-		EndpointID: { type: String },
-		IndustryClassificationCode: { type: String },
+		PartyLegalEntity: {
+			RegistrationName: { type: String },
+			CompanyLegalForm: { type: String },
+		},
 		PostalAdress: {
 			Postbox: { type: String },
 			StreetName: { type: String },
@@ -23,7 +26,6 @@ const Customer = new mongoose.Schema({
 			Telephone: { type: String },
 			ElectronicMail: { type: String },
 		},
-		BuyerReference: { type: String },
 	},
 });
 Customer.plugin(uniqueValidator, {

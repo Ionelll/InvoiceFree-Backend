@@ -79,28 +79,26 @@ user.get("/isloggedin", auth, (req, res) => {
 			});
 		});
 });
-user.post("/updatecompany", auth, upload.single("Logo"), (req, res) => {
+user.post("/updatecompany", auth, upload.single("Logo"), async (req, res) => {
 	if (req.file) {
 		req.body.Logo =
-			"https://" + req.headers.host + "/uploads/" + req.file.filename;
+			"http://" + req.headers.host + "/uploads/" + req.file.filename;
 	}
-	User.findByIdAndUpdate(
-		req.UserId,
-		req.body,
-		{ _id: 0, __v: 0, password: 0 },
-		{ new: true }
-	)
-		.then((response) => {
+	try {
+		const user = await User.findByIdAndUpdate(req.UserId, req.body, {
+			_id: 0,
+			__v: 0,
+			password: 0,
+			new: true,
+		});
+		if (user)
 			res.status(201).json({
-				user: response,
+				user: user,
 				message: "Updated succesfully",
 			});
-		})
-		.catch((error) => {
-			res.status(422).json({
-				message: error.message,
-			});
-		});
+	} catch (error) {
+		res.status(500).json({ message: "Internal server Error" });
+	}
 });
 
 user.post("/updateItems", auth, (req, res) => {
