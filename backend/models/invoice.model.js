@@ -9,19 +9,23 @@ const invoiceSchema = new mongoose.Schema({
 		EndDate: { type: String },
 	},
 	Note: { type: String },
+	PaymentTerms: { Note: { type: String } },
 	DocumentCurrencyCode: { type: String, required: true },
-	BuyerReference: { type: String },
 	OrderReference: { ID: { type: String } },
 	ContractDocumentReference: {
 		ID: { type: String },
-		DocumentType: { type: String },
 	},
 	AccountingSupplierParty: {
 		Party: {
 			PartyName: { Name: { type: String, required: true } },
-			PartyIdentification: { ID: { type: String, required: true } },
-			EndpointID: { type: String },
-			IndustryClassificationCode: { type: String },
+			PartyTaxScheme: {
+				CompanyID: { type: String, required: true },
+				TaxScheme: { ID: { type: String } },
+			},
+			PartyLegalEntity: {
+				RegistrationName: { type: String },
+				CompanyLegalForm: { type: String },
+			},
 			PostalAdress: {
 				Postbox: { type: String },
 				StreetName: { type: String },
@@ -34,17 +38,21 @@ const invoiceSchema = new mongoose.Schema({
 			Contact: {
 				Name: { type: String },
 				Telephone: { type: String },
-				ElectronicMail: String,
+				ElectronicMail: { type: String },
 			},
 		},
 	},
 	AccountingCustomerParty: {
 		Party: {
 			PartyName: { Name: { type: String, required: true } },
-			PartyIdentification: { ID: { type: String, required: true } },
-			EndpointID: { type: String },
-			IndustryClassificationCode: { type: String },
-			BuyerReference: { type: String },
+			PartyTaxScheme: {
+				CompanyID: { type: String, required: true },
+				TaxScheme: { ID: { type: String } },
+			},
+			PartyLegalEntity: {
+				RegistrationName: { type: String },
+				CompanyLegalForm: { type: String },
+			},
 			PostalAdress: {
 				Postbox: { type: String },
 				StreetName: { type: String },
@@ -93,6 +101,7 @@ const invoiceSchema = new mongoose.Schema({
 			{
 				TaxSubtotal: {
 					TaxableAmount: { type: String },
+					TaxAmout: { type: String },
 					TaxCategory: {
 						ID: { type: String },
 						Percent: { type: String },

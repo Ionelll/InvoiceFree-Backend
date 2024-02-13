@@ -22,22 +22,24 @@ const userSchema = new mongoose.Schema({
 			},
 		},
 	],
-
-	preferedLanguage: { type: String },
 	invoiceSettings: {
 		duePeriod: { type: Number },
 		DocumentCurrencyCode: { type: String },
-		introduction: { type: String },
 		Note: { type: String },
 		PaymentTerms: { Note: { type: String } },
 	},
 
 	lastInvoiceNr: { type: String },
 	Party: {
-		PartyName: { Name: { type: String, unique: true } },
-		PartyIdentification: { ID: { type: String, unique: true } },
-		EndpointID: { type: String },
-		IndustryClassificationCode: { type: String },
+		PartyName: { Name: { type: String, required: true, unique: true } },
+		PartyTaxScheme: {
+			CompanyID: { type: String, required: true, unique: true },
+			TaxScheme: { ID: { type: String } },
+		},
+		PartyLegalEntity: {
+			RegistrationName: { type: String },
+			CompanyLegalForm: { type: String },
+		},
 		PostalAdress: {
 			Postbox: { type: String },
 			StreetName: { type: String },

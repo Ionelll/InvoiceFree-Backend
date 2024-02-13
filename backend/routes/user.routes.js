@@ -58,26 +58,8 @@ user.post("/login", async (req, res) => {
 	}
 });
 
-user.get("/isloggedin", auth, (req, res) => {
-	User.findById(req.UserId, { password: 0, _id: 0, __v: 0 })
-		.then((response) => {
-			if (!response) {
-				res.status(200).json({
-					message: "Not logged in",
-				});
-			} else {
-				res.status(200).json({
-					loggedin: true,
-					user: response,
-				});
-			}
-		})
-		.catch((error) => {
-			res.status(400).json({
-				message: error.message,
-				error: error,
-			});
-		});
+user.get("/isloggedin", auth, async (req, res) => {
+	res.status(200).json({ message: "Token checked" });
 });
 user.post("/updatecompany", auth, upload.single("Logo"), async (req, res) => {
 	if (req.file) {
