@@ -58,8 +58,8 @@ user.post("/login", async (req, res) => {
 	}
 });
 
-user.get("/isloggedin", auth, async (req, res) => {
-	res.status(200).json({ message: "Token checked" });
+user.get("/isloggedin", auth, (req, res) => {
+	res.status(200).json({ message: "Token passed" });
 });
 user.post("/updatecompany", auth, upload.single("Logo"), async (req, res) => {
 	if (req.file) {

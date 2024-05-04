@@ -5,15 +5,16 @@ const auth = (req, res, next) => {
 	const token = req.headers["authorization"];
 
 	if (!token) {
-		return res.status(200).json(false);
+		return res.status(200).json({ message: "No token" });
 	}
 
 	decodeJWT = JSON.parse(
 		Buffer.from(token.split(".")[1], "base64").toString()
 	);
+
 	const expired = Date.now() >= decodeJWT.exp * 1000;
 	if (expired) {
-		return res.status(404).json({
+		return res.status(200).json({
 			message: "Token expired",
 		});
 	}
