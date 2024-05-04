@@ -10,7 +10,7 @@ const cookieParser = require("cookie-parser");
 app = express();
 
 mongoose
-	.connect(process.env.ATLAS_CONNECTION)
+	.connect(process.env.RAILWAY_CONNECTION)
 	.then(() => {
 		console.log("connected");
 	})
