@@ -31,9 +31,9 @@ const userSchema = new mongoose.Schema({
 
 	lastInvoiceNr: { type: String },
 	Party: {
-		PartyName: { Name: { type: String, required: true, unique: true } },
+		PartyName: { Name: { type: String, unique: true } },
 		PartyTaxScheme: {
-			CompanyID: { type: String, required: true, unique: true },
+			CompanyID: { type: String, unique: true },
 			TaxScheme: { ID: { type: String } },
 		},
 		PartyLegalEntity: {
