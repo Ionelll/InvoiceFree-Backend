@@ -74,7 +74,7 @@ user.post("/updatecompany", auth, upload.single("Logo"), async (req, res) => {
 			"http://" + req.headers.host + "/uploads/" + req.file.filename;
 	}
 	try {
-		const user = await User.findByIdAndUpdate(req.UserId, JSON.parse(req.body.company), {
+		const user = await User.findByIdAndUpdate(req.UserId, JSON.parse(req.body.Party), {
 			_id: 0,
 			__v: 0,
 			password: 0,
