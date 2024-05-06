@@ -21,7 +21,7 @@ mongoose
 app.use(cookieParser());
 app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ credentials: true, origin: process.env.CLIENT }));
+app.use(cors({withCredentials:true,origin:process.env.CLIENT}));
 app.use("/uploads", express.static("uploads"));
 
 app.use("/api", clientRoutes);

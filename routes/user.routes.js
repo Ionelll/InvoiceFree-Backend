@@ -58,9 +58,15 @@ user.post("/login", async (req, res) => {
 	}
 });
 
-user.get("/isloggedin", auth, (req, res) => {
-	res.status(200).json({ message: "Token passed" });
-});
+user.get("/isloggedin", auth, async(req, res) => {
+	const user = await User.findById(req.UserId, { password: 0 });
+	if (user) {
+		res.status(200).json({
+			loggedin: true,
+			user: user,
+		});
+	}
+	});
 user.post("/updatecompany", auth, upload.single("Logo"), async (req, res) => {
 	if (req.file) {
 		req.body.Logo =
