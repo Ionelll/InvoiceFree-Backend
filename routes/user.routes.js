@@ -59,10 +59,11 @@ user.post("/login", async (req, res) => {
 });
 
 user.get("/isloggedin", auth, async(req, res) => {
-	const user = await User.findById(req.UserId, { password: 0 });
+// Suggested code may be subject to a license. Learn more: ~LicenseLog:3789988381.
+	const user = await User.findById(req.UserId, { password: 0, __v: 0,_id:0 });
 	if (user) {
 		res.status(200).json({
-			loggedin: true,
+			message: "Token passed",
 			user: user,
 		});
 	}
