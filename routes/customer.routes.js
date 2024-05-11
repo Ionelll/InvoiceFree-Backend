@@ -64,13 +64,13 @@ router.get("/searchcustomer/:name", (req, res) => {
 					},
 				},
 				{
-					"Party.PartyIdentification.ID": {
+					"Party.PartyLegalEntity.CompanyLegalForm": {
 						$regex: req.params.name,
 						$options: "i",
 					},
 				},
 				{
-					"Party.BuyerReference": {
+					"Party.PartyTaxScheme.CompanyID": {
 						$regex: req.params.name,
 						$options: "i",
 					},

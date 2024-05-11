@@ -58,28 +58,45 @@ user.post("/login", async (req, res) => {
 	}
 });
 
-user.get("/isloggedin", auth, async(req, res) => {
-// Suggested code may be subject to a license. Learn more: ~LicenseLog:3789988381.
-	const user = await User.findById(req.UserId, { password: 0, __v: 0,_id:0 });
+user.get("/isloggedin", auth, async (req, res) => {
+	// Suggested code may be subject to a license. Learn more: ~LicenseLog:3789988381.
+	const user = await User.findById(req.UserId, {
+		password: 0,
+		__v: 0,
+		_id: 0,
+	});
 	if (user) {
 		res.status(200).json({
 			message: "Token passed",
 			user: user,
 		});
 	}
-	});
+});
 user.post("/updatecompany", auth, upload.single("Logo"), async (req, res) => {
 	if (req.file) {
 		req.body.Logo =
 			"http://" + req.headers.host + "/uploads/" + req.file.filename;
 	}
+
 	try {
-		const user = await User.findByIdAndUpdate(req.UserId, JSON.parse(req.body.Party), {
-			_id: 0,
-			__v: 0,
-			password: 0,
-			new: true,
-		});
+		const userInput = JSON.parse(req.body.Party);
+		const user = await User.findByIdAndUpdate(
+			req.UserId,
+			{
+				$set: {
+					Party: userInput.Party,
+					PayeeFinancialAccount: userInput.PayeeFinancialAccount,
+					Logo: req.body.Logo,
+				},
+			},
+
+			{
+				_id: 0,
+				__v: 0,
+				password: 0,
+				new: true,
+			}
+		);
 		if (user)
 			res.status(201).json({
 				user: user,
